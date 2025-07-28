@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://cryptovault.com/sitemap.xml
+
+# Disallow admin and API routes
+Disallow: /admin
+Disallow: /api/
+Disallow: /dashboard
+
+# Allow important pages
+Allow: /
+Allow: /about
+Allow: /contact
+Allow: /login
+Allow: /register
+
+# Crawl delay
+Crawl-delay: 1

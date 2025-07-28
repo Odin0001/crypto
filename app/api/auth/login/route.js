@@ -59,12 +59,12 @@ export async function POST(request) {
         name: user.name,
         email: user.email,
         role: user.role,
-        balance: Number.parseFloat(user.balance),
+        balance: Number.parseFloat(user.balance || 0),
         referralCode: user.referral_code || null,
         tier: user.tier || "none",
-        weeklyReturnRate: Number.parseFloat(user.weekly_return_rate || 0),
-        bonusRate: Number.parseFloat(user.bonus_rate || 0),
-        totalDeposited: Number.parseFloat(user.total_deposited || 0),
+        weeklyReturnRate: Number.parseFloat(user.weekly_return_rate || "0"),
+        bonusRate: Number.parseFloat(user.bonus_rate || "0"),
+        totalDeposited: Number.parseFloat(user.total_deposited || "0"),
       },
     })
   } catch (error) {

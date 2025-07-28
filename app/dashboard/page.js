@@ -67,6 +67,28 @@ export default function DashboardPage() {
     }
   }
 
+  const refreshUserData = async () => {
+    if (user?.id) {
+      try {
+        const response = await fetch("/api/user/referrals", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id: user.id }),
+        })
+        
+        if (response.ok) {
+          const data = await response.json()
+          setUser(data.user)
+          localStorage.setItem("user", JSON.stringify(data.user))
+        }
+      } catch (error) {
+        console.error("Error refreshing user data:", error)
+      }
+    }
+  }
+
   const handleWithdrawal = async (e) => {
     e.preventDefault()
 
@@ -112,6 +134,7 @@ export default function DashboardPage() {
         setWithdrawalAmount("")
         setWalletAddress("")
         fetchWithdrawalRequests()
+        refreshUserData() // Refresh user data after withdrawal
       } else {
         toast({
           title: "Error",
@@ -177,6 +200,12 @@ export default function DashboardPage() {
           <div className="mb-8">
             <h1 className="text-4xl font-bold text-white mb-2 neon-text">Welcome back, {user.name}!</h1>
             <p className="text-gray-400">Manage your investments and track your portfolio</p>
+            <button 
+              onClick={refreshUserData}
+              className="mt-2 text-sm text-blue-400 hover:text-blue-300 underline"
+            >
+              Refresh Balance
+            </button>
           </div>
 
           {/* Balance and Tier Cards */}
@@ -187,7 +216,7 @@ export default function DashboardPage() {
                 <Wallet className="h-4 w-4 text-blue-500" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-white">${user.balance?.toLocaleString() || "0.00"}</div>
+                <div className="text-2xl font-bold text-white">${(user.balance || 0).toLocaleString()}</div>
                 <p className="text-xs text-gray-400">Available for withdrawal</p>
               </CardContent>
             </Card>
